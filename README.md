@@ -11,15 +11,17 @@ AariaToysの第1作、[ヘビゲーム](https://github.com/marcusbuffett/bevy_sn
 - 様々な要素を変更できるため、プレイ感は設定次第で大きく変わります。子供がブロックで遊ぶように、能動的/創造的にゲームプレイを楽しめます。
 
 ## Customize
-[main.rs](https://github.com/Aariar/snake/blob/main/src/main.rs)の上部にある以下の設定項目から、ゲーム設定を自由に調整することができます。
+[config.txt](https://github.com/Aariar/snake/blob/main/config.txt)にて、ゲーム設定を自由に調整することができます。
+半角:の後の値(数値かbool値)部分のみ書き換えます。簡易な処理をしているため、「:値(空白不可)」以外はあまりいじらないでください。
+具体的な処理は[config_load](https://github.com/Aariar/snake/blob/main/src/main.rs)で確認できます。
 
-- WIDTH ： 横マスの数を指定(ヘビはこのマス単位で移動します)。
-- HEIGHT ： 縦マスの数を指定。
-- SPEED ： ヘビ速度をms(1/1000秒)単位で指定します。このタイミングでヘビの位置は更新されます。
-- POP ： 餌の出現頻度をms単位で設定します。
-- TAIL ： trueにすると伸びたヘビの尾はどんどん縮まっていきます。
-- WINWID ： ゲームウィンドウの幅をpixel単位で指定します。
-- WINGHT ： ゲームウィンドウの幅をpixel単位で指定します。
+- width_num ： 横マスの数を指定(ヘビはこのマス単位で移動します)。
+- height_num ： 縦マスの数を指定。
+- snake_speed ： ヘビ速度をms(1/1000秒)単位で指定します。このタイミングでヘビの位置は更新されます。
+- food_pop ： 餌の出現頻度をms単位で設定します。
+- tail_shrink ： trueにすると伸びたヘビの尾はどんどん縮まっていきます(true以外の文字列は全てfalse扱い)。
+- win_width ： ゲームウィンドウの幅をpixel単位で指定します。
+- win_height ： ゲームウィンドウの幅をpixel単位で指定します。
 
 ## How to Play ?
 AariaToysシリーズはデジタル世界のおもちゃのブロックのように、自由に遊び方(ルール)を設定し遊べるゲームです。  
