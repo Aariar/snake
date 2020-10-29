@@ -1,6 +1,6 @@
 # Snake - AariaToys
 AariaToysの第1作、[ヘビゲーム](https://github.com/marcusbuffett/bevy_snake)から派生したBevy製ゲームです。
-![Snake](https://1.bp.blogspot.com/-Ys7HZCD3P4o/X5o5t-HbZkI/AAAAAAAABDI/szooc0ANLvgWHsJLSm7jQ2HYN8aJvPCGACLcBGAsYHQ/s1032/snake.jpg)
+<img src="https://1.bp.blogspot.com/-Ys7HZCD3P4o/X5o5t-HbZkI/AAAAAAAABDI/szooc0ANLvgWHsJLSm7jQ2HYN8aJvPCGACLcBGAsYHQ/s1032/snake.jpg" width=320>
 ## Game rules
   通常のヘビゲームとは、以下の点で違いがあります。
 - 自分の尾や、画面枠に当たってもゲームオーバーにはなりません。  
