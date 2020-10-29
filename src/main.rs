@@ -2,15 +2,42 @@ use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
 use rand::prelude::random;
 use std::time::Duration;
+use std::fs::File;
+use std::io::Read;
 
-const WIDTH: u32 = 50; // 横マス数
-const HEIGHT: u32 = 50; // 縦マス数
-const SPEED: u64 = 100; // 蛇速度
-const POP: u64 = 500; // 出現頻度
-const TAIL: bool = false; // 自動尾縮
-const WINWID: u32 = 1000; // Window 幅
-const WINHGT: u32 = 1000; // Window 高さ
+fn file_open(path: &str) -> String {
+    let mut text = String::new();
+    if let Ok(mut data) = File::open(path) { data.read_to_string(&mut text).expect(path); }
+    text
+}
 
+#[derive(Clone)]
+struct Config {
+    width: u32,
+    height: u32,
+    snake_speed: u64,
+    food_pop: u64,
+    tail_shrink: bool,
+    win_width: u32,
+    win_height: u32,
+}
+
+fn config_load() -> Config {
+    let mut x = Vec::new();
+    for line in file_open("config.txt").lines() {
+        x.push(format!("{}",&line[line.find(':').unwrap()+1..]));
+    }
+    Config {
+        width: x[0].parse().unwrap(),
+        height: x[1].parse().unwrap(),
+        snake_speed: x[2].parse().unwrap(),
+        food_pop: x[3].parse().unwrap(),
+        tail_shrink: if x[4]=="true" { true } else { false },
+        win_width: x[5].parse().unwrap(),
+        win_height: x[6].parse().unwrap(),
+    }
+}
+ 
 struct HeadMaterial(Handle<ColorMaterial>); // 頭
 struct SegmentMaterial(Handle<ColorMaterial>); // 尾
 struct SnakeHead {
@@ -105,6 +132,7 @@ fn snake_movement(
     mut snake_timer: ResMut<SnakeMoveTimer>,
     mut game_over_events: ResMut<Events<GameOverEvent>>,
     segment_material: Res<SegmentMaterial>,
+    config: Res<Config>,
     mut head_positions: Query<(&mut SnakeHead, &mut Position)>,
     segments: Query<&mut SnakeSegment>,
     positions: Query<&mut Position>,
@@ -117,8 +145,8 @@ fn snake_movement(
             let mut segment_entity = head.next_segment;
             if head_pos.x < 0 { head_pos.x += 2 } // 画面外 防止
             if head_pos.y < 0 { head_pos.y += 2 }
-            if head_pos.x as u32 > WIDTH { head_pos.x -= 2 }
-            if head_pos.y as u32 > HEIGHT { head_pos.y -= 2 }
+            if head_pos.x as u32 > config.width { head_pos.x -= 2 }
+            if head_pos.y as u32 > config.height { head_pos.y -= 2 }
             let mut change = false;
             if keyboard_input.pressed(KeyCode::Left) {
                 head_pos.x -= 1; change = true;
@@ -135,7 +163,7 @@ fn snake_movement(
             if keyboard_input.pressed(KeyCode::Return) {
                 game_over_events.send(GameOverEvent);
             }
-            if TAIL || change { // 尾縮
+            if config.tail_shrink || change { // 尾縮
                 loop {
                     let segment = segments.get::<SnakeSegment>(segment_entity).unwrap();
                     let mut segment_position = positions.get_mut::<Position>(segment_entity).unwrap();
@@ -188,6 +216,7 @@ fn food_spawner(
     mut commands: Commands,
     food_material: Res<FoodMaterial>,
     time: Res<Time>,
+    config: Res<Config>,
     mut timer: ResMut<FoodSpawnTimer>,
 ) {
     timer.0.tick(time.delta_seconds);
@@ -199,48 +228,55 @@ fn food_spawner(
             })
             .with(Food)
             .with(Position {
-                x: (random::<f32>() * WIDTH as f32) as i32,
-                y: (random::<f32>() * HEIGHT as f32) as i32,
+                x: (random::<f32>() * config.width as f32) as i32,
+                y: (random::<f32>() * config.height as f32) as i32,
             })
             .with(Size::square(0.8));
     }
 }
 
-fn size_scaling(windows: Res<Windows>, mut q: Query<(&Size, &mut Sprite)>) {
+fn size_scaling(windows: Res<Windows>, config: Res<Config>, mut q: Query<(&Size, &mut Sprite)>) {
     for (size, mut sprite) in &mut q.iter() {
         let window = windows.get_primary().unwrap();
         sprite.size = Vec2::new(
-            size.width as f32 / WIDTH as f32 * window.width as f32,
-            size.height as f32 / HEIGHT as f32 * window.height as f32,
+            size.width as f32 / config.width as f32 * window.width as f32,
+            size.height as f32 / config.height as f32 * window.height as f32,
         );
     }
 }
 
-fn position_translation(windows: Res<Windows>, mut q: Query<(&Position, &mut Transform)>) {
+fn position_translation(windows: Res<Windows>, config: Res<Config>, mut q: Query<(&Position, &mut Transform)>) {
     fn convert(p: f32, bound_window: f32, bound_game: f32) -> f32 {
         p / bound_game * bound_window - (bound_window / 2.)
     }
     let window = windows.get_primary().unwrap();
     for (pos, mut transform) in &mut q.iter() {
         transform.set_translation(Vec3::new(
-            convert(pos.x as f32, window.width as f32, WIDTH as f32),
-            convert(pos.y as f32, window.height as f32, HEIGHT as f32),
+            convert(pos.x as f32, window.width as f32, config.width as f32),
+            convert(pos.y as f32, window.height as f32, config.height as f32),
             0.0,
         ))
     }
 }
 
 fn main() {
+    let conf = config_load();
+    let conf2 = conf.clone();
     App::build()
-        .add_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
+    .add_resource(conf2)
+    .add_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
         .add_resource(WindowDescriptor {
             title: "Snake - AariaToys".to_string(),
-            width: WINWID,
-            height: WINHGT,
+            width: conf.win_width,
+            height: conf.win_height,
             ..Default::default()
         })
         .add_resource(SnakeMoveTimer(Timer::new(
-            Duration::from_millis(SPEED),
+            Duration::from_millis(conf.snake_speed),
+            true,
+        )))
+        .add_resource(FoodSpawnTimer(Timer::new(
+            Duration::from_millis(conf.food_pop),
             true,
         )))
         .add_event::<GameOverEvent>()
@@ -250,10 +286,6 @@ fn main() {
         .add_system(snake_movement.system())
         .add_system(position_translation.system())
         .add_system(size_scaling.system())
-        .add_resource(FoodSpawnTimer(Timer::new(
-            Duration::from_millis(POP),
-            true,
-        )))
         .add_system(food_spawner.system())
         .add_system(game_over_system.system())
         .add_default_plugins()
