@@ -11,7 +11,7 @@ AariaToysの第1作、[ヘビゲーム](https://github.com/marcusbuffett/bevy_sn
 - 様々な要素を変更できるため、プレイ感は設定次第で大きく変わります。子供がブロックで遊ぶように、能動的/創造的にゲームプレイを楽しめます。
 
 ## Customize
-[config.txt](https://github.com/Aariar/snake/blob/main/config.txt)にて、ゲーム設定を自由に調整することができます。
+[config.txt](https://github.com/Aariar/snake/blob/main/config.txt)にて、ゲーム設定を自由に調整することができます(ゲーム再起動で反映)。
 半角:の後の値(数値かbool値)部分のみ書き換えます。簡易な処理をしているため、「:値(空白不可)」以外はあまりいじらないでください。
 具体的な処理は[config_load](https://github.com/Aariar/snake/blob/main/src/main.rs)で確認できます。
 
