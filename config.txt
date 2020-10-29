@@ -1,0 +1,7 @@
+width_num:50
+height_num:50
+snake_speed:100
+food_pop:500
+tail_shrink:false
+win_width:1000
+win_height:1000
