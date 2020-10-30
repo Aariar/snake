@@ -265,29 +265,29 @@ fn main() {
     App::build()
     .add_resource(conf2)
     .add_resource(ClearColor(Color::rgb(0.04, 0.04, 0.04)))
-        .add_resource(WindowDescriptor {
-            title: "Snake - AariaToys".to_string(),
-            width: conf.win_width,
-            height: conf.win_height,
-            ..Default::default()
-        })
-        .add_resource(SnakeMoveTimer(Timer::new(
-            Duration::from_millis(conf.snake_speed),
-            true,
-        )))
-        .add_resource(FoodSpawnTimer(Timer::new(
-            Duration::from_millis(conf.food_pop),
-            true,
-        )))
-        .add_event::<GameOverEvent>()
-        .add_startup_system(setup.system())
-        .add_startup_stage("game_setup")
-        .add_startup_system_to_stage("game_setup", game_setup.system())
-        .add_system(snake_movement.system())
-        .add_system(position_translation.system())
-        .add_system(size_scaling.system())
-        .add_system(food_spawner.system())
-        .add_system(game_over_system.system())
-        .add_default_plugins()
-        .run();
+    .add_resource(WindowDescriptor {
+        title: "Snake - AariaToys".to_string(),
+        width: conf.win_width,
+        height: conf.win_height,
+        ..Default::default()
+    })
+    .add_resource(SnakeMoveTimer(Timer::new(
+        Duration::from_millis(conf.snake_speed),
+        true,
+    )))
+    .add_resource(FoodSpawnTimer(Timer::new(
+        Duration::from_millis(conf.food_pop),
+        true,
+    )))
+    .add_event::<GameOverEvent>()
+    .add_startup_system(setup.system())
+    .add_startup_stage("game_setup")
+    .add_startup_system_to_stage("game_setup", game_setup.system())
+    .add_system(snake_movement.system())
+    .add_system(position_translation.system())
+    .add_system(size_scaling.system())
+    .add_system(food_spawner.system())
+    .add_system(game_over_system.system())
+    .add_default_plugins()
+    .run();
 }
