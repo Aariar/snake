@@ -1,5 +1,5 @@
 # Snake - AariaToys
-AariaToysの第1作、[ヘビゲーム](https://github.com/marcusbuffett/bevy_snake)から派生したBevy製ゲームです。  
+[AariaToys](https://github.com/Aariar/bevy_games/tree/main/AariaToys)の第1作、[ヘビゲーム](https://github.com/marcusbuffett/bevy_snake)から派生したBevy製ゲームです。  
 <img src="https://1.bp.blogspot.com/-Ys7HZCD3P4o/X5o5t-HbZkI/AAAAAAAABDI/szooc0ANLvgWHsJLSm7jQ2HYN8aJvPCGACLcBGAsYHQ/s1032/snake.jpg" width=320>
 ## Game rules
   通常のヘビゲームとは、以下の点で違いがあります。
@@ -24,7 +24,7 @@ AariaToysの第1作、[ヘビゲーム](https://github.com/marcusbuffett/bevy_sn
 - win_height ： ゲームウィンドウの幅をpixel単位で指定します。
 
 ## How to Play ?
-AariaToysシリーズはデジタル世界のおもちゃのブロックのように、自由に遊び方(ルール)を設定し遊べるゲームです。  
+[AariaToys](https://github.com/Aariar/bevy_games/tree/main/AariaToys)シリーズはデジタル世界のおもちゃのブロックのように、自由に遊び方(ルール)を設定し遊べるゲームです。  
 そこに決まったルールはなく、ただただデジタルの世界で「遊ぶ」ことを目的としています。  
 もちろん、上記設定項目以外にも、コードでスコアを追加したり、ヘビに画像を当てはめられるよう改良するのもご自由に。  
 snake.exeから起動する場合は、同じフォルダにconfig.txtがある必要があるので、ご注意ください。  
