@@ -38,5 +38,5 @@ rustup update
 でnightlyの最新版に設定できます。  
 
 ## Data
-- compile time ： 7m 44s (cargo run --release)  
+- compile time ： 7m 44s (cargo run --release) ※飽くまで目安です  
 - exe file ： 10.4MB
