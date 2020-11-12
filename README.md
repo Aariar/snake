@@ -31,6 +31,12 @@ snake.exeから起動する場合は、同じフォルダにconfig.txtがある�
 新しい改良バージョンが出来上がったらご一報いただければこちらからリンクさせていただきますし、あるいは当バージョンに組み込ませていただくかも知れません。  
 自由に作り、自由に設定し、自由に遊び、自由に共有する……[Bevy](https://bevyengine.org/)と共に
 
+## Notice
+Rustでコンパイルする際はnightly版をお使いください。  
+rustup default nightly  
+rustup update  
+でnightlyの最新版に設定できます。  
+
 ## Data
 - compile time ： 7m 44s (cargo run --release)  
 - exe file ： 10.4MB
